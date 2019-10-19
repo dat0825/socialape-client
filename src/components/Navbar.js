@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Link from "react-router-dom/Link";
+import {Link} from "react-router-dom";
 // Material UI stuff
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,7 +17,7 @@ class Navbar extends Component {
             Home
           </Button>
           <Button color="inherit" component={Link} to="/signup">
-            Signup
+            Sign up
           </Button>
         </Toolbar>
       </AppBar>
