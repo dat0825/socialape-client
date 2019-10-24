@@ -1,32 +1,26 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
 import Status from "../components/Status";
-import Profile from '../components/Profile';
+import Profile from "../components/Profile";
+
+import { connect } from "react-redux";
+import { getStatus } from "../redux/actions/dataActions";
 
 class home extends Component {
-  state = {
-    status: null
-  };
   componentDidMount() {
-    axios
-      .get("/status")  // get proxy from package.json
-      .then(res => {
-        // console.log(res.data);
-        this.setState({
-          status: res.data
-        });
-      })
-      .catch(err => console.log(err));
+    this.props.getStatus();
   }
   render() {
-    let recentStatusMarkup = this.state.status ? (
-      this.state.status.map(status => <Status key={status.statusId} status={status} />)
+    const { status, loading } = this.props.data;
+    let recentStatusMarkup = !loading ? (
+      status.map(status => <Status key={status.statusId} status={status} />)
     ) : (
       <p>Loading...</p>
     );
- 
+
     return (
       <Grid container spacing={10}>
         <Grid item sm={8} xs={12}>
@@ -42,4 +36,16 @@ class home extends Component {
   }
 }
 
-export default home;
+home.propTypes = {
+  getStatus: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  data: state.data
+});
+
+export default connect(
+  mapStateToProps,
+  { getStatus }
+)(home);
